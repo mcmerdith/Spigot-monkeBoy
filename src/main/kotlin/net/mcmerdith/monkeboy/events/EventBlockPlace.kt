@@ -1,7 +1,7 @@
 package net.mcmerdith.monkeboy.events
 
 import net.mcmerdith.monkeboy.entity.Townsperson
-import net.mcmerdith.monkeboy.inventory.HandlerEditFillInventoryClick
+import net.mcmerdith.monkeboy.inventory.HandlerInventoryEditFillClick
 import net.mcmerdith.monkeboy.util.BlockUtil
 import net.mcmerdith.monkeboy.util.ChatUtil
 import net.mcmerdith.monkeboy.util.ItemUtil
@@ -56,9 +56,9 @@ class EventBlockPlace : Listener {
                             return
                         }
 
-                        HandlerEditFillInventoryClick.reset(player)
+                        HandlerInventoryEditFillClick.reset(player)
                         val area = BlockUtil.FillArea(loc1, location, fillType, player)
-                        HandlerEditFillInventoryClick.register(event.player, area)
+                        HandlerInventoryEditFillClick.register(event.player, area)
                         Bukkit.getPluginManager().callEvent(FillEvent(area))
                     }
                 } else {

@@ -2,7 +2,7 @@ package net.mcmerdith.monkeboy.events
 
 import net.mcmerdith.monkeboy.config.UserPrefsConfig
 import net.mcmerdith.monkeboy.enum.ConfigKeys
-import net.mcmerdith.monkeboy.inventory.HandlerEditFillInventoryClick
+import net.mcmerdith.monkeboy.inventory.HandlerInventoryEditFillClick
 import net.mcmerdith.monkeboy.util.ChatUtil
 import net.mcmerdith.monkeboy.util.InventoryUtil
 import net.mcmerdith.monkeboy.util.Util
@@ -31,7 +31,7 @@ class EventFill : Listener {
                 */
                 ChatUtil.royal(player, "Filling $command")
                 event.area.execute()
-                HandlerEditFillInventoryClick.reset(event.area.player)
+                HandlerInventoryEditFillClick.reset(event.area.player)
             } else {
                 /* Something is preventing the fill from executing
                 * EITHER

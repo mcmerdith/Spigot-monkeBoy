@@ -3,10 +3,12 @@ package net.mcmerdith.monkeboy.inventory
 import net.mcmerdith.monkeboy.config.UserPrefsConfig
 import net.mcmerdith.monkeboy.enum.ConfigKeys
 import net.mcmerdith.monkeboy.util.InventoryUtil
+import org.bukkit.entity.HumanEntity
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.ItemStack
 
-class HandlerPrefsInventoryClick : InventoryClickHandler() {
-    override fun clickEvent(event: InventoryClickEvent) {
+class HandlerInventoryPreferencesClick : InventoryClickHandler() {
+    override fun handle(clickedItem: ItemStack?, player: HumanEntity, event: InventoryClickEvent) {
         event.isCancelled = true
 
         val fillwarnings = ConfigKeys.PREF_FILLWARNING.pass(listOf(event.whoClicked.uniqueId.toString()))

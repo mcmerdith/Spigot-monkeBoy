@@ -8,8 +8,9 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.ItemStack
 
-class HandlerEditFillInventoryClick : InventoryClickHandler() {
+class HandlerInventoryEditFillClick : InventoryClickHandler() {
     companion object {
         private val exclude = mutableMapOf<HumanEntity, Boolean>()
         val areas = mutableMapOf<HumanEntity, BlockUtil.FillArea>()
@@ -24,50 +25,36 @@ class HandlerEditFillInventoryClick : InventoryClickHandler() {
             exclude.remove(player)
             areas.remove(player)
         }
-//        val identifiers = mutableMapOf<HumanEntity, ItemStack>()
-//        val options = mutableMapOf<HumanEntity, MutableList<BlockUtil.FillOption>>()
-//        fun addOption(player: HumanEntity, material: Material) {
-//            val opts = options[player] ?: mutableListOf()
-//            val identifier = identifiers[player] ?: return
-//            opts.add(BlockUtil.FillOption(if (state[player] == true) BlockUtil.FillOption.Type.NOT else BlockUtil.FillOption.Type.IF, material))
-//            options[player] = opts
-//            InventoryUtil.open(player, InventoryUtil.getFillEdit(opts, identifier))
-//        }
-//        fun reset(player: HumanEntity) {
-//            options.remove(player)
-//            state.remove(player)
-//            identifiers.remove(player)
-//        }
     }
 
-    override fun clickEvent(event: InventoryClickEvent) {
+    override fun handle(clickedItem: ItemStack?, player: HumanEntity, event: InventoryClickEvent) {
         event.isCancelled = true
 
-        when (event.currentItem) {
+        when (clickedItem) {
             InventoryUtil.UI.EDIT_FILL.ADD_EXCLUDE,
             InventoryUtil.UI.EDIT_FILL.ADD_INCLUDE -> {
-                val inv = InventoryUtil.getBlockSelector(Inventories.FILLEDIT_SELECT.invName())
-                inv.register(event.whoClicked)
+                val inv = InventoryUtil.getBlockSelector(Inventories.EDIT_FILL_SELECT.invName())
+                inv.register(player)
                 inv.show()
 
-                exclude[event.whoClicked] = event.currentItem == InventoryUtil.UI.EDIT_FILL.ADD_EXCLUDE
+                exclude[player] = clickedItem == InventoryUtil.UI.EDIT_FILL.ADD_EXCLUDE
             }
             InventoryUtil.UI.EDIT_FILL.EXECUTE -> {
-                InventoryUtil.close(event.whoClicked)
+                InventoryUtil.close(player)
 
-                val area = areas[event.whoClicked] ?: return
+                val area = areas[player] ?: return
 
                 Bukkit.getPluginManager().callEvent(FillEvent(area, true))
             }
             else -> {
-                val item = event.currentItem ?: return
+                val item = clickedItem ?: return
                 val data = item.itemMeta?.lore?.get(0) ?: return
                 val option = BlockUtil.FillOption.from(data) ?: return
 
-                val opts = areas[event.whoClicked]?.options ?: return
+                val opts = areas[player]?.options ?: return
                 opts.removeIf { it.mat == option.mat && it.type == option.type }
 
-                InventoryUtil.open(event.whoClicked, InventoryUtil.getFillEdit(opts))
+                InventoryUtil.open(player, InventoryUtil.getFillEdit(opts))
             }
         }
     }

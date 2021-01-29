@@ -88,7 +88,7 @@ object InventoryUtil {
         val exclude = options.filter { it.type == BlockUtil.FillOption.Type.NOT }.chunked(8).getOrNull(0) ?: listOf()
         val include = options.filter { it.type == BlockUtil.FillOption.Type.IF }.chunked(8).getOrNull(0) ?: listOf()
 
-        val inv = newInv(4, Inventories.FILLEDIT.invName())
+        val inv = newInv(4, Inventories.EDIT_FILL.invName())
         setItem(0, 0, inv, UI.EDIT_FILL.ADD_EXCLUDE)
         setItem(0, 1, inv, UI.EDIT_FILL.ADD_INCLUDE)
         setItem(4, 3, inv, UI.EDIT_FILL.EXECUTE)
@@ -105,7 +105,7 @@ object InventoryUtil {
     }
 
     fun getFillComplete(): Inventory {
-        val inv = newInv(1, Inventories.FILLCOMPLETE.invName())
+        val inv = newInv(1, Inventories.FILL_CONFIRM.invName())
 
         setItem(3, 0, inv, UI.EDIT_FILL.EXECUTE)
         setItem(4, 0, inv, UI.EDIT_FILL.PREVIEW)
@@ -140,7 +140,7 @@ object InventoryUtil {
     /* UTIL INVENTORY FUNCTIONS */
 
     fun newInv(rowsRaw: Int, name: String, scrollable: Boolean = false): Inventory {
-        val hasHome = !listOf(Inventories.MENU, Inventories.FILLEDIT_SELECT).map { name.startsWith(it.invName()) }.contains(true)
+        val hasHome = !listOf(Inventories.MENU, Inventories.EDIT_FILL_SELECT).map { name.startsWith(it.invName()) }.contains(true)
         val rows = (rowsRaw + (if (scrollable || hasHome) 1 else 0)).coerceIn(0..6)
 
         val inv = Bukkit.createInventory(null, rows * 9, name)

@@ -1,16 +1,17 @@
 package net.mcmerdith.monkeboy.enum
 
+import net.mcmerdith.monkeboy.inventory.*
 import org.bukkit.ChatColor
 
-enum class Inventories(val invName: String) {
-    MENU("monke Menu"),
-    PREFERENCES("Preferences"),
-    SELECTOR("Select"),
-    FILL("Fill"),
-    FILLEDIT("Edit Fill"),
-    FILLEDIT_SELECT("FE"),
-    FILLCOMPLETE("FC"),
-    TAKE("Take your block");
+enum class Inventories(private val invName: String, val handler: InventoryClickHandler?) {
+    MENU("monke Menu", HandlerInventoryMenuClick()),
+    PREFERENCES("Preferences", HandlerInventoryPreferencesClick()),
+    SELECTOR("Select", null),
+    TAKE("Take your block", null),
+    FILL("Fill", HandlerInventoryFillClick()),
+    FILL_CONFIRM("FC", HandlerInventoryFillConfirmClick()),
+    EDIT_FILL("Edit Fill", HandlerInventoryEditFillClick()),
+    EDIT_FILL_SELECT("FE", HandlerInventoryEditFillSelectorClick());
 
     fun invName(): String {
         return "${ChatColor.BOLD}$invName"

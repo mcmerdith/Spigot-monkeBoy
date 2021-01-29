@@ -1,0 +1,6 @@
+welcome:
+  show: true
+  message:
+    - "This server is running monkeBoy v1.0"
+    - "Your preferences are saved in /preferences"
+    - "Access the menu with /menu"

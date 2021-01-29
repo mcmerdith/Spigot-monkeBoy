@@ -1,0 +1,63 @@
+name: monkeboy
+version: 1.0
+main: net.mcmerdith.monkeboy.Main
+api-version: 1.16
+permissions:
+  trainnetwork.admin:
+    default: op
+    description: Admin of the Train Network
+  trainnetwork.user:
+    default: true
+    description: User of the Train Network
+  monkeboy.admin:
+    default: op
+    description: Admin of the server
+  monkeboy.user:
+    default: true
+    description: Generic user of the server
+commands:
+  menu:
+    permission: monkeboy.user
+    description: Open the server menu
+    usage: /menu
+  preferences:
+    permission: monkeboy.user
+    aliases: prefs
+    description: Edit user preferences
+    usage: /preferences
+  fillitem:
+    permission: monkeboy.admin
+    description: Get a fill block
+    usage: /fillitem <block name>
+  fillconfirm:
+    permission: monkeboy.admin
+    description: Open the fill confirmation dialog
+    usage: /fillconfirm
+#  executefill:
+#    permission: monkeboy.admin
+#    description: Fill an area
+#    usage: Do not use /executefill. This command is automanaged by the plugin
+#  editfill:
+#    permission: monkeboy.admin
+#    description: Edit an fill event
+#    usage: Do not use /executefill. This command is automanaged by the plugin
+#  trainnetwork:
+#    permission: trainnetwork.user
+#    description: View the train network
+#    usage: /trainnetwork
+#  edittrainnetwork:
+#    permission: trainnetwork.admin
+#    description: Edit the network
+#    usage: /editnetwork <add/drop> <station/junction> <network id> [name]
+#  linktrainnetwork:
+#    permission: trainnetwork.admin
+#    description: Link 2 stops on the network
+#    usage: /linktrainnetwork <station/junction> <network id> <station/junction> <network id>
+#  hastraintarget:
+#    permission: trainnetwork.admin
+#    description: Train Network backend. Check if the closest player is targeting a certain route
+#    usage: /hastraintarget <station/junction> <network id>
+#  settraintarget:
+#    permission: trainnetwork.user
+#    description: Select a station
+#    usage: /settraintarget <network id>

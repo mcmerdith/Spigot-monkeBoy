@@ -3,7 +3,10 @@ package net.mcmerdith.monkeboy
 import net.mcmerdith.monkeboy.commands.*
 import net.mcmerdith.monkeboy.config.NetworkConfig
 import net.mcmerdith.monkeboy.config.UserPrefsConfig
-import net.mcmerdith.monkeboy.events.*
+import net.mcmerdith.monkeboy.events.EventBlockPlace
+import net.mcmerdith.monkeboy.events.EventFill
+import net.mcmerdith.monkeboy.events.EventInventoryClick
+import net.mcmerdith.monkeboy.events.EventPlayerJoin
 import net.mcmerdith.monkeboy.util.ItemUtil
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -32,7 +35,6 @@ class Main : JavaPlugin() {
     }
 
     fun config() {
-        //ConfigManager.initialize()
         NetworkConfig.initialize()
         UserPrefsConfig.initialize()
 
@@ -40,13 +42,10 @@ class Main : JavaPlugin() {
     }
 
     fun registerCommands() {
-//        registerCommand("trainnetwork", CommandTrainNetwork(this))
         registerCommand("menu", CommandMenu())
         registerCommand("preferences", CommandPrefs())
         registerCommand("fillitem", CommandFillItem())
         registerCommand("fillconfirm", CommandFillConfirm())
-//        registerCommand("executefill", CommandExecuteFill())
-//        registerCommand("editfill", CommandEditFill())
     }
 
     fun registerEvents() {

@@ -24,7 +24,7 @@ class HandlerInventoryEditFillClick : InventoryClickHandler() {
         }
         fun reset(player: HumanEntity) {
             exclude.remove(player)
-            areas[player]?.expire()
+            areas[player]?.expire(false)
             areas.remove(player)
         }
     }

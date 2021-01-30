@@ -7,18 +7,18 @@ import org.bukkit.inventory.ItemStack
 
 class HandlerScrollableInventory : InventoryClickHandler() {
     override fun handle(clickedItem: ItemStack?, player: HumanEntity, event: InventoryClickEvent) {
-        when (event.currentItem) {
+        when (clickedItem) {
             InventoryUtil.UI.NAV.BACK -> {
                 event.isCancelled = true
-                InventoryUtil.scrollables[event.whoClicked]?.prevInv()
+                InventoryUtil.scrollables[player]?.prevInv()
             }
             InventoryUtil.UI.NAV.FORWARD -> {
                 event.isCancelled = true
-                InventoryUtil.scrollables[event.whoClicked]?.nextInv()
+                InventoryUtil.scrollables[player]?.nextInv()
             }
             InventoryUtil.UI.NAV.HOME -> {
                 event.isCancelled = true
-                InventoryUtil.open(event.whoClicked, InventoryUtil.getMenu())
+                InventoryUtil.open(player, InventoryUtil.getMenu())
             }
         }
     }

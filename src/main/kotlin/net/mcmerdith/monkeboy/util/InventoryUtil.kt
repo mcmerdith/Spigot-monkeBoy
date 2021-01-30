@@ -20,9 +20,10 @@ object InventoryUtil {
         }
 
         object MENU {
-            val FILL = newGUIItem(Material.STONE, "Fill", "Fill")
-            val CLEAR = newGUIItem(Material.BARRIER, "Clear", "Clear")
+            val FILL = newGUIItem(Material.STONE, "Fill", "Fill an Area")
+            val CLEAR = newGUIItem(Material.BARRIER, "Clear", "Clear an Area")
             val PREFS = newGUIItem(Material.PAPER, "User Preferences", "Preferences")
+            val CLONE = newGUIItem(Material.CHISELED_POLISHED_BLACKSTONE, "Clone", "Clone an Area")
         }
 
         object PREFS {
@@ -47,6 +48,7 @@ object InventoryUtil {
 
         object ITEMS {
             val CLEAR = newGUIItem(Material.BARRIER, "Clear Area", "AIR")
+            val CLONE = newGUIItem(Material.CHISELED_POLISHED_BLACKSTONE, "Clone", "CLONE")
             val AIR_ITEM = newGUIItem(Material.BARRIER, "Air", "AIR")
             val AIR_ITEM_EXCLUDE = newGUIItem(Material.BARRIER, "Air", "EXCLUDE:AIR")
             val AIR_ITEM_INCLUDE = newGUIItem(Material.BARRIER, "Air", "INCLUDE:AIR")
@@ -62,6 +64,7 @@ object InventoryUtil {
         setItem(4, 1, menu, UI.MENU.FILL)
         setItem(4, 2, menu, UI.MENU.CLEAR)
         setItem(1, 1, menu, UI.MENU.PREFS)
+        setItem(1,7, menu, UI.MENU.CLONE)
         return menu
     }
 
@@ -125,8 +128,6 @@ object InventoryUtil {
         val finalInv = ScrollableInventory()
         var currentInv: Inventory? = null
 
-        val withAir = items.toMutableList()
-
         items.forEachIndexed { i: Int, material: Material ->
             if (i % 36 == 0) {
                 if (i != 0) finalInv.addInventory(currentInv!!)
@@ -142,7 +143,7 @@ object InventoryUtil {
     /* UTIL INVENTORY FUNCTIONS */
 
     fun newInv(rowsRaw: Int, name: String, scrollable: Boolean = false): Inventory {
-        val hasHome = !listOf(Inventories.MENU, Inventories.EDIT_FILL_SELECT).map { name.startsWith(it.invName()) }.contains(true)
+        val hasHome = name.startsWith(Inventories.MENU.invName())
         val rows = (rowsRaw + (if (scrollable || hasHome) 1 else 0)).coerceIn(0..6)
 
         val inv = Bukkit.createInventory(null, rows * 9, name)

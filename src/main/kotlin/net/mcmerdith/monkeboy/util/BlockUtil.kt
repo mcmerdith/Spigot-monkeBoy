@@ -62,7 +62,7 @@ object BlockUtil {
 
         val timestamp = System.currentTimeMillis()
         val particles: BukkitTask = Bukkit.getScheduler().runTaskTimer(Main.getInstance(), Runnable {
-            if (System.currentTimeMillis() - timestamp > 60000) expire()
+            if (System.currentTimeMillis() - timestamp > 300000) expire()
 
             if (hasPlayer && !noWorld) {
                 /*

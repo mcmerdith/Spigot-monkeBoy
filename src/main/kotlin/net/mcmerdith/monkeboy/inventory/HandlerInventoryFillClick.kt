@@ -11,8 +11,8 @@ class HandlerInventoryFillClick : InventoryClickHandler() {
     override fun handle(clickedItem: ItemStack?, player: HumanEntity, event: InventoryClickEvent) {
         event.isCancelled = true
 
-        val item = event.currentItem ?: return
-        if (item.type == Material.AIR) return
-        InventoryUtil.open(event.whoClicked, InventoryUtil.getTakeMenu(ItemUtil.getFillItem(item.type)))
+        clickedItem ?: return
+        if (clickedItem.type == Material.AIR) return
+        InventoryUtil.open(player, InventoryUtil.getTakeMenu(ItemUtil.getFillItem(clickedItem.type)))
     }
 }

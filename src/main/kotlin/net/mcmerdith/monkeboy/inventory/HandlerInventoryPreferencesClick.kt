@@ -11,9 +11,9 @@ class HandlerInventoryPreferencesClick : InventoryClickHandler() {
     override fun handle(clickedItem: ItemStack?, player: HumanEntity, event: InventoryClickEvent) {
         event.isCancelled = true
 
-        val fillwarnings = ConfigKeys.PREF_FILLWARNING.pass(listOf(event.whoClicked.uniqueId.toString()))
+        val fillwarnings = ConfigKeys.PREF_FILLWARNING.pass(listOf(player.uniqueId.toString()))
 
-        when (event.currentItem) {
+        when (clickedItem) {
             InventoryUtil.UI.PREFS.FILL_WARNINGS.ENABLED,
             InventoryUtil.UI.PREFS.FILL_WARNINGS.DISABLED -> {
                 val config = UserPrefsConfig.config
@@ -21,7 +21,7 @@ class HandlerInventoryPreferencesClick : InventoryClickHandler() {
                 config.set(fillwarnings, state)
                 UserPrefsConfig.save()
 
-                InventoryUtil.open(event.whoClicked, InventoryUtil.getPreferencesMenu(event.whoClicked))
+                InventoryUtil.open(player, InventoryUtil.getPreferencesMenu(player))
             }
         }
     }

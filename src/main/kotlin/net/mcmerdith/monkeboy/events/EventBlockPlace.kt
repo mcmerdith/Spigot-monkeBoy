@@ -56,7 +56,6 @@ class EventBlockPlace : Listener {
                             return
                         }
 
-                        HandlerInventoryEditFillClick.reset(player)
                         val area = BlockUtil.FillArea(loc1, location, fillType, player)
                         HandlerInventoryEditFillClick.register(event.player, area)
                         Bukkit.getPluginManager().callEvent(FillEvent(area))

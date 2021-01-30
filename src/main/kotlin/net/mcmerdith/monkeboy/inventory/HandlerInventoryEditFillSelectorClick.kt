@@ -10,11 +10,11 @@ class HandlerInventoryEditFillSelectorClick : InventoryClickHandler() {
     override fun handle(clickedItem: ItemStack?, player: HumanEntity, event: InventoryClickEvent) {
         event.isCancelled = true
 
-        val item = clickedItem ?: return
+        clickedItem ?: return
 
-        var type = item.type
-        if (item == InventoryUtil.UI.ITEMS.AIR_ITEM) type = Material.AIR
+        var type = clickedItem.type
+        if (clickedItem == InventoryUtil.UI.ITEMS.AIR_ITEM) type = Material.AIR
 
-        HandlerInventoryEditFillClick.addOption(event.whoClicked, type)
+        HandlerInventoryEditFillClick.addOption(player, type)
     }
 }

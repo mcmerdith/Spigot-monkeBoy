@@ -14,25 +14,25 @@ class HandlerInventoryFillConfirmClick : InventoryClickHandler() {
     override fun handle(clickedItem: ItemStack?, player: HumanEntity, event: InventoryClickEvent) {
         event.isCancelled = true
 
-        when (event.currentItem) {
+        when (clickedItem) {
             InventoryUtil.UI.EDIT_FILL.EXECUTE -> {
-                HandlerInventoryEditFillClick.areas[event.whoClicked]?.let {
+                HandlerInventoryEditFillClick.areas[player]?.let {
                     Bukkit.getPluginManager().callEvent(FillEvent(it, true))
                 }
-                InventoryUtil.close(event.whoClicked)
+                InventoryUtil.close(player)
             }
             InventoryUtil.UI.EDIT_FILL.PREVIEW -> {
-                InventoryUtil.close(event.whoClicked)
+                InventoryUtil.close(player)
 
                 val edit = TextComponent("${ChatColor.AQUA}[REOPEN DIALOG]")
                 edit.clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, "/fillconfirm")
 
                 // Send the message
-                event.whoClicked.spigot().sendMessage(edit)
+                player.spigot().sendMessage(edit)
             }
             InventoryUtil.UI.EDIT_FILL.MASK_AND_EXECUTE -> {
-                HandlerInventoryEditFillClick.areas[event.whoClicked]?.let {
-                    InventoryUtil.open(event.whoClicked, InventoryUtil.getFillEdit(it.options))
+                HandlerInventoryEditFillClick.areas[player]?.let {
+                    InventoryUtil.open(player, InventoryUtil.getFillEdit(it.options))
                 }
             }
             InventoryUtil.UI.EDIT_FILL.CANCEL -> {

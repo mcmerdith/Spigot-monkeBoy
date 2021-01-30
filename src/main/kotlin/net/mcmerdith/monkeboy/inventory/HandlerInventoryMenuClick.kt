@@ -10,17 +10,20 @@ class HandlerInventoryMenuClick : InventoryClickHandler() {
     override fun handle(clickedItem: ItemStack?, player: HumanEntity, event: InventoryClickEvent) {
         event.isCancelled = true
 
-        when (event.currentItem) {
+        when (clickedItem) {
             InventoryUtil.UI.MENU.FILL -> {
                 val fill = InventoryUtil.getFillBlockSelector(Inventories.FILL.invName())
-                fill.register(event.whoClicked)
+                fill.register(player)
                 fill.show()
             }
             InventoryUtil.UI.MENU.CLEAR -> {
-                InventoryUtil.open(event.whoClicked, InventoryUtil.getTakeMenu(InventoryUtil.UI.ITEMS.CLEAR))
+                InventoryUtil.open(player, InventoryUtil.getTakeMenu(InventoryUtil.UI.ITEMS.CLEAR))
             }
             InventoryUtil.UI.MENU.PREFS -> {
-                InventoryUtil.open(event.whoClicked, InventoryUtil.getPreferencesMenu(event.whoClicked))
+                InventoryUtil.open(player, InventoryUtil.getPreferencesMenu(player))
+            }
+            InventoryUtil.UI.MENU.CLONE -> {
+                InventoryUtil.open(player, InventoryUtil.getTakeMenu(InventoryUtil.UI.ITEMS.CLONE))
             }
         }
     }

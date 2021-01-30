@@ -2,6 +2,7 @@ package net.mcmerdith.monkeboy.inventory
 
 import net.mcmerdith.monkeboy.enum.Inventories
 import net.mcmerdith.monkeboy.events.FillEvent
+import net.mcmerdith.monkeboy.selection.FillArea
 import net.mcmerdith.monkeboy.util.BlockUtil
 import net.mcmerdith.monkeboy.util.InventoryUtil
 import org.bukkit.Bukkit
@@ -13,8 +14,8 @@ import org.bukkit.inventory.ItemStack
 class HandlerInventoryEditFillClick : InventoryClickHandler() {
     companion object {
         private val exclude = mutableMapOf<HumanEntity, Boolean>()
-        val areas = mutableMapOf<HumanEntity, BlockUtil.FillArea>()
-        fun register(player: HumanEntity, area: BlockUtil.FillArea) {
+        val areas = mutableMapOf<HumanEntity, FillArea>()
+        fun register(player: HumanEntity, area: FillArea) {
             areas[player]?.expire()
             areas[player] = area
         }

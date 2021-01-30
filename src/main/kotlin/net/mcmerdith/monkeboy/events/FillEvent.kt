@@ -1,12 +1,12 @@
 package net.mcmerdith.monkeboy.events
 
-import net.mcmerdith.monkeboy.util.BlockUtil
+import net.mcmerdith.monkeboy.selection.FillArea
 import org.bukkit.event.Cancellable
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 import org.bukkit.util.Vector
 
-class FillEvent(val area: BlockUtil.FillArea, val warned: Boolean = false) : Event(), Cancellable {
+class FillEvent(val area: FillArea, val warned: Boolean = false) : Event(), Cancellable {
     private var isCancelled = false
 
     override fun isCancelled(): Boolean {

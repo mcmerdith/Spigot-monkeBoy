@@ -64,7 +64,7 @@ object InventoryUtil {
         setItem(4, 1, menu, UI.MENU.FILL)
         setItem(4, 2, menu, UI.MENU.CLEAR)
         setItem(1, 1, menu, UI.MENU.PREFS)
-        setItem(1,7, menu, UI.MENU.CLONE)
+        setItem(7,1, menu, UI.MENU.CLONE)
         return menu
     }
 

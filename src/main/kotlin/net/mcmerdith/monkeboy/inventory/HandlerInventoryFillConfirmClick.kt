@@ -35,6 +35,10 @@ class HandlerInventoryFillConfirmClick : InventoryClickHandler() {
                     InventoryUtil.open(event.whoClicked, InventoryUtil.getFillEdit(it.options))
                 }
             }
+            InventoryUtil.UI.EDIT_FILL.CANCEL -> {
+                HandlerInventoryEditFillClick.areas[player]?.expire()
+                InventoryUtil.close(player)
+            }
         }
     }
 }

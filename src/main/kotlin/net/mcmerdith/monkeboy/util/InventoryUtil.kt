@@ -42,6 +42,7 @@ object InventoryUtil {
             val EXECUTE = newGUIItem(Material.COMMAND_BLOCK, "Execute", "Run the fill command now")
             val MASK_AND_EXECUTE = newGUIItem(Material.CHAIN_COMMAND_BLOCK, "Mask and Execute", "Edit the fill area's block masking")
             val PREVIEW = newGUIItem(Material.ENDER_EYE, "View Area", "Close the GUI and preview the area that will be filled")
+            val CANCEL = newGUIItem(Material.BARRIER, "Cancel", "Cancel the fill job")
         }
 
         object ITEMS {

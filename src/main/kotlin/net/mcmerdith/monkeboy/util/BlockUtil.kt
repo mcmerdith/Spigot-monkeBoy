@@ -3,10 +3,11 @@ package net.mcmerdith.monkeboy.util
 import net.mcmerdith.monkeboy.Main
 import net.mcmerdith.monkeboy.inventory.HandlerInventoryEditFillClick
 import org.bukkit.Bukkit
-import org.bukkit.Effect
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.entity.HumanEntity
+import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
 import org.bukkit.util.Vector
 
@@ -50,7 +51,7 @@ object BlockUtil {
 
     class FillArea(val start: Location, val finish: Location, val type: Material, val player: HumanEntity? = null, val options: MutableList<FillOption> = mutableListOf()) {
         val b1 = start.toVector()
-        val b2 = start.toVector()
+        val b2 = finish.toVector()
 
         val fillStart = Vector.getMinimum(b1, b2)
         val fillFinish = Vector.getMaximum(b1, b2)
@@ -61,7 +62,7 @@ object BlockUtil {
 
         val timestamp = System.currentTimeMillis()
         val particles: BukkitTask = Bukkit.getScheduler().runTaskTimer(Main.getInstance(), Runnable {
-            if (System.currentTimeMillis() - timestamp > 30000) expire()
+            if (System.currentTimeMillis() - timestamp > 60000) expire()
 
             if (hasPlayer && !noWorld) {
                 /*
@@ -84,12 +85,45 @@ object BlockUtil {
                  */
 
                 // Dirty quickhack cause I don't know what I'm doing
+                (player as? Player)?.let { p ->
+                    // Spawn on the X Axis
+                    listOf(
+                            Pair(fillStart.y, fillStart.z),
+                            Pair(fillStart.y, fillFinish.z),
+                            Pair(fillFinish.y, fillStart.z),
+                            Pair(fillFinish.y, fillFinish.z)
+                    ).forEach {
+                        for (x in fillStart.blockX..fillFinish.blockX) {
+                            p.spawnParticle(Particle.BARRIER, Location(world, x.toDouble(), it.first, it.second), 1, 0.5, 0.5, 0.5)
+                        }
+                    }
 
-                for (x in fillStart.blockX..fillFinish.blockX ) {
-                    world?.playEffect(Location(world, x.toDouble(), fillStart.y, fillStart.z), Effect.DRAGON_BREATH, null)
+                    // Spawn on the Y Axis
+                    listOf(
+                            Pair(fillStart.x, fillStart.z),
+                            Pair(fillStart.x, fillFinish.z),
+                            Pair(fillFinish.x, fillStart.z),
+                            Pair(fillFinish.x, fillFinish.z)
+                    ).forEach {
+                        for (y in fillStart.blockY..fillFinish.blockY) {
+                            p.spawnParticle(Particle.BARRIER, Location(world, it.first, y.toDouble(), it.second), 1, 0.5, 0.5, 0.5)
+                        }
+                    }
+
+                    // Spawn on the Z Axis
+                    listOf(
+                            Pair(fillStart.x, fillStart.y),
+                            Pair(fillStart.x, fillFinish.y),
+                            Pair(fillFinish.x, fillStart.y),
+                            Pair(fillFinish.x, fillFinish.y)
+                    ).forEach {
+                        for (z in fillStart.blockZ..fillFinish.blockZ) {
+                            p.spawnParticle(Particle.BARRIER, Location(world, it.first, it.second, z.toDouble()), 1, 0.5, 0.5, 0.5)
+                        }
+                    }
                 }
             }
-        }, 0, 1000)
+        }, 0, 20)
 
         fun execute() {
             Bukkit.getScheduler().runTask(Main.getInstance(), Runnable {
@@ -119,13 +153,15 @@ object BlockUtil {
                                 }
                     }
                 }
+
+                expire(false)
             })
         }
 
-        fun expire() {
+        fun expire(notifyPlayer: Boolean = true) {
             particles.cancel()
             HandlerInventoryEditFillClick.areas.remove(player)
-            if (hasPlayer) ChatUtil.error(player!!, "Fill Job ($fillStart -> $fillFinish")
+            if (hasPlayer && notifyPlayer) ChatUtil.error(player!!, "Fill Job ($fillStart -> $fillFinish) expired")
         }
     }
 }

@@ -111,6 +111,7 @@ object InventoryUtil {
         setItem(3, 0, inv, UI.EDIT_FILL.EXECUTE)
         setItem(4, 0, inv, UI.EDIT_FILL.PREVIEW)
         setItem(5, 0, inv, UI.EDIT_FILL.MASK_AND_EXECUTE)
+        setItem(8, 0, inv, UI.EDIT_FILL.CANCEL)
 
         return inv
     }

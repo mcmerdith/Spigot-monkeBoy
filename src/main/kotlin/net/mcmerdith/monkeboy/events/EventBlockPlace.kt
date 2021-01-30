@@ -46,7 +46,7 @@ class EventBlockPlace : Listener {
 
                     if (loc1 == null) {
                         player.inventory.setItemInMainHand(ItemUtil.getFillItem(fillType, location, previous = item))
-                        ChatUtil.royal(player, "Location Saved (${Util.locationToString(location)})")
+                        ChatUtil.info(player, "Location Saved (${Util.locationToString(location)})")
                     } else {
                         player.inventory.setItemInMainHand(ItemUtil.getFillItem(fillType, matOverride = type))
 

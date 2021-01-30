@@ -94,7 +94,7 @@ object BlockUtil {
                             Pair(fillFinish.y, fillFinish.z)
                     ).forEach {
                         for (x in fillStart.blockX..fillFinish.blockX) {
-                            p.spawnParticle(Particle.BARRIER, Location(world, x.toDouble(), it.first, it.second), 1, 0.5, 0.5, 0.5)
+                            p.spawnParticle(Particle.BARRIER, Location(world, x.toDouble() + 0.5, it.first + 0.5, it.second + 0.5), 1)
                         }
                     }
 
@@ -106,7 +106,7 @@ object BlockUtil {
                             Pair(fillFinish.x, fillFinish.z)
                     ).forEach {
                         for (y in fillStart.blockY..fillFinish.blockY) {
-                            p.spawnParticle(Particle.BARRIER, Location(world, it.first, y.toDouble(), it.second), 1, 0.5, 0.5, 0.5)
+                            p.spawnParticle(Particle.BARRIER, Location(world, it.first + 0.5, y.toDouble() + 0.5, it.second + 0.5), 1)
                         }
                     }
 
@@ -118,14 +118,21 @@ object BlockUtil {
                             Pair(fillFinish.x, fillFinish.y)
                     ).forEach {
                         for (z in fillStart.blockZ..fillFinish.blockZ) {
-                            p.spawnParticle(Particle.BARRIER, Location(world, it.first, it.second, z.toDouble()), 1, 0.5, 0.5, 0.5)
+                            p.spawnParticle(Particle.BARRIER, Location(world, it.first + 0.5,it.second + 0.5, z.toDouble() + 0.5), 1)
                         }
                     }
                 }
             }
         }, 0, 20)
 
+        init {
+            if (hasPlayer) {
+                ChatUtil.info(player!!, "Generated fill command ($fillStart -> $fillFinish)")
+            }
+        }
+
         fun execute() {
+            if (hasPlayer) ChatUtil.info(player!!, "Filling $fillStart -> $fillFinish with ${type.name}")
             Bukkit.getScheduler().runTask(Main.getInstance(), Runnable {
                 when {
                     noWorld -> {
@@ -151,6 +158,8 @@ object BlockUtil {
 
                                     block.type = type
                                 }
+
+                        if (hasPlayer) ChatUtil.success(player!!, "Complete")
                     }
                 }
 

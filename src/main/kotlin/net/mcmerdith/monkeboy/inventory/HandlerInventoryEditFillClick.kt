@@ -15,6 +15,7 @@ class HandlerInventoryEditFillClick : InventoryClickHandler() {
         private val exclude = mutableMapOf<HumanEntity, Boolean>()
         val areas = mutableMapOf<HumanEntity, BlockUtil.FillArea>()
         fun register(player: HumanEntity, area: BlockUtil.FillArea) {
+            areas[player]?.expire()
             areas[player] = area
         }
         fun addOption(player: HumanEntity, material: Material) {
@@ -23,6 +24,7 @@ class HandlerInventoryEditFillClick : InventoryClickHandler() {
         }
         fun reset(player: HumanEntity) {
             exclude.remove(player)
+            areas[player]?.expire()
             areas.remove(player)
         }
     }

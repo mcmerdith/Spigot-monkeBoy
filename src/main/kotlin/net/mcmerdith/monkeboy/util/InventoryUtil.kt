@@ -143,7 +143,7 @@ object InventoryUtil {
     /* UTIL INVENTORY FUNCTIONS */
 
     fun newInv(rowsRaw: Int, name: String, scrollable: Boolean = false): Inventory {
-        val hasHome = name.startsWith(Inventories.MENU.invName())
+        val hasHome = !name.startsWith(Inventories.MENU.invName())
         val rows = (rowsRaw + (if (scrollable || hasHome) 1 else 0)).coerceIn(0..6)
 
         val inv = Bukkit.createInventory(null, rows * 9, name)

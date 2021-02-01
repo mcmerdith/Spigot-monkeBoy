@@ -23,7 +23,10 @@ class HandlerInventoryMenuClick : InventoryClickHandler() {
                 InventoryUtil.open(player, InventoryUtil.getPreferencesMenu(player))
             }
             InventoryUtil.UI.MENU.CLONE -> {
-                InventoryUtil.open(player, InventoryUtil.getTakeMenu(InventoryUtil.UI.ITEMS.CLONE))
+                InventoryUtil.open(
+                    player,
+                    InventoryUtil.getTakeMenu(InventoryUtil.UI.ITEMS.CLONE)
+                )
             }
         }
     }

@@ -33,6 +33,10 @@ commands:
     permission: monkeboy.admin
     description: Open the fill confirmation dialog
     usage: /fillconfirm
+  cloneconfirm:
+    permission: monkeboy.admin
+    description: Open the clone confirmation dialog
+    usage: /cloneconfirm
 #  executefill:
 #    permission: monkeboy.admin
 #    description: Fill an area

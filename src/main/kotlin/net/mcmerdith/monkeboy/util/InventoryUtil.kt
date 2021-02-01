@@ -5,6 +5,7 @@ import net.mcmerdith.monkeboy.config.UserPrefsConfig
 import net.mcmerdith.monkeboy.enum.Inventories
 import net.mcmerdith.monkeboy.inventory.ScrollableInventory
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.HumanEntity
@@ -44,6 +45,12 @@ object InventoryUtil {
             val MASK_AND_EXECUTE = newGUIItem(Material.CHAIN_COMMAND_BLOCK, "Mask and Execute", "Edit the fill area's block masking")
             val PREVIEW = newGUIItem(Material.ENDER_EYE, "View Area", "Close the GUI and preview the area that will be filled")
             val CANCEL = newGUIItem(Material.BARRIER, "Cancel", "Cancel the fill job")
+        }
+
+        object CLONE {
+            val EXECUTE = newGUIItem(Material.COMMAND_BLOCK, "Execute", "Clone the area")
+            val PREVIEW = newGUIItem(Material.ENDER_EYE, "View Area", "Close the GUI and preview the area that will be cloned")
+            val CANCEL = newGUIItem(Material.BARRIER, "Cancel", "Cancel the clone job")
         }
 
         object ITEMS {
@@ -119,6 +126,16 @@ object InventoryUtil {
         return inv
     }
 
+    fun getCloneComplete(): Inventory {
+        val inv = newInv(1, Inventories.CLONE_CONFIRM.invName())
+
+        setItem(3, 0, inv, UI.CLONE.EXECUTE)
+        setItem(4, 0, inv, UI.CLONE.PREVIEW)
+        setItem(5, 0, inv, UI.CLONE.CANCEL)
+
+        return inv
+    }
+
     fun getFillBlockSelector(name: String?): ScrollableInventory = getSelector(ItemUtil.SOLID_BLOCKS, name)
     fun getBlockSelector(name: String?): ScrollableInventory = getSelector(ItemUtil.BLOCKS, name)
     fun getItemSelector(name: String?): ScrollableInventory = getSelector(ItemUtil.ITEMS, name)
@@ -165,8 +182,8 @@ object InventoryUtil {
 
     fun newGUIItem(mat: Material, name: String, lore: List<String>? = null): ItemStack {
         val item = ItemStack(mat)
-        val meta = item.itemMeta// ?: Bukkit.getItemFactory().getItemMeta(mat)
-        meta?.setDisplayName(name)
+        val meta = item.itemMeta
+        meta?.setDisplayName("${ChatColor.GOLD}$name")
         meta?.lore = lore
         if (meta == null) println("$mat $name $lore")
         item.itemMeta = meta
@@ -177,6 +194,13 @@ object InventoryUtil {
 
     fun setItem(column: Int, row: Int, inventory: Inventory, item: ItemStack) {
         inventory.setItem((row.coerceIn(0..5) * 9) + column.coerceIn(0..8), item)
+    }
+
+    fun isItemGUIItem(item: ItemStack, gui: ItemStack): Boolean {
+        if (!item.containsEnchantment(Enchantment.DURABILITY)) return false
+        if (item.itemMeta?.displayName != gui.itemMeta?.displayName) return false
+
+        return true
     }
 
     /* PLAYER FUNCTIONS */

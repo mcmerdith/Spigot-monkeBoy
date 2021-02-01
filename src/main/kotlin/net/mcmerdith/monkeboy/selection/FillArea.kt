@@ -23,7 +23,7 @@ class FillArea(val start: Location, val finish: Location, val type: Material, va
     val world = start.world
     val noWorld = world != finish.world || world == null
 
-    val particles: BukkitTask? = (player as? Player)?.let { drawBorderFor(it, fillStart, fillFinish, 60, 300000) }
+    val particles: BukkitTask? = (player as? Player)?.let { drawBorderFor(it, fillStart, fillFinish) }
 
     init {
         if (hasPlayer) {

@@ -14,9 +14,12 @@ object ItemUtil {
     val ALL_ITEMS = mutableListOf<Material>()
 
     lateinit var timestampKey: NamespacedKey
+    lateinit var cloneIDKey: NamespacedKey
 
     fun initialize() {
-        this.timestampKey = NamespacedKey(Main.getInstance(), "fill-timestamp")
+        val main = Main.getInstance()
+        this.timestampKey = NamespacedKey(main, "fill-timestamp")
+        this.cloneIDKey = NamespacedKey(main, "clone-id")
 
         Material.values().forEach {
             if (it.isBlock) {
@@ -72,11 +75,23 @@ object ItemUtil {
 
         // Attach a timestamp
         val meta = item.itemMeta
-        meta?.persistentDataContainer?.set(timestampKey, PersistentDataType.LONG, System.currentTimeMillis())
+        timestamp(item)
         item.itemMeta = meta
 
         if (first == null) return item
         if (second == null) return appendLore(item, Util.locationToString(first))
         return appendLore(item, listOf(Util.locationToString(first), Util.locationToString(second)))
+    }
+
+    fun timestamp(item: ItemStack) {
+        setData(item, timestampKey, PersistentDataType.LONG, System.currentTimeMillis())
+    }
+
+    fun <T,Z> setData(item: ItemStack, key: NamespacedKey, type: PersistentDataType<T,Z>, data: Z) {
+        item.itemMeta?.persistentDataContainer?.set(key, type, data)
+    }
+
+    fun <T,Z> getData(item: ItemStack, key: NamespacedKey, type: PersistentDataType<T,Z>): Z? {
+        return item.itemMeta?.persistentDataContainer?.get(key, type)
     }
 }

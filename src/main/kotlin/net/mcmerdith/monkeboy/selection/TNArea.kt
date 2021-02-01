@@ -10,10 +10,12 @@ import org.bukkit.util.Vector
 
 abstract class TNArea {
     private val timestamp = System.currentTimeMillis()
+    val watchdog = Bukkit.getScheduler().runTaskTimer(Main.getInstance(), Runnable {
+        if (System.currentTimeMillis() - timestamp > 300000) expire()
+    }, 0, 60)
 
-    fun drawBorderFor(player: Player, start: Vector, finish: Vector, interval: Long, lifespanMS: Int): BukkitTask {
+    fun drawBorderFor(player: Player, start: Vector, finish: Vector): BukkitTask {
         return Bukkit.getScheduler().runTaskTimer(Main.getInstance(), Runnable {
-            if (System.currentTimeMillis() - timestamp > lifespanMS) expire()
             listOf(
                 Pair(start.y, start.z),
                 Pair(start.y, finish.z),
@@ -21,10 +23,9 @@ abstract class TNArea {
                 Pair(finish.y, finish.z)
             ).forEach {
                 for (x in start.blockX..finish.blockX) {
-                    player.spawnParticle(
-                        Particle.BARRIER,
-                        Location(player.world, x.toDouble() + 0.5, it.first + 0.5, it.second + 0.5),
-                        1
+                    spawnParticle(
+                        player,
+                        Location(player.world, x.toDouble(), it.first, it.second)
                     )
                 }
             }
@@ -37,10 +38,9 @@ abstract class TNArea {
                 Pair(finish.x, finish.z)
             ).forEach {
                 for (y in start.blockY..finish.blockY) {
-                    player.spawnParticle(
-                        Particle.BARRIER,
-                        Location(player.world, it.first + 0.5, y.toDouble() + 0.5, it.second + 0.5),
-                        1
+                    spawnParticle(
+                        player,
+                        Location(player.world, it.first, y.toDouble(), it.second)
                     )
                 }
             }
@@ -53,16 +53,19 @@ abstract class TNArea {
                 Pair(finish.x, finish.y)
             ).forEach {
                 for (z in start.blockZ..finish.blockZ) {
-                    player.spawnParticle(
-                        Particle.BARRIER,
-                        Location(player.world, it.first + 0.5, it.second + 0.5, z.toDouble() + 0.5),
-                        1
+                    spawnParticle(
+                        player,
+                        Location(player.world, it.first, it.second, z.toDouble()),
                     )
                 }
 
             }
-        }, 0, interval)// Spawn on the X Axis
+        }, 0, 60)
 
+    }
+
+    fun spawnParticle(player: Player, location: Location) {
+        player.spawnParticle(Particle.BARRIER, location.x + 0.5, location.y + 0.5, location.z + 0.5, 1)
     }
 
     abstract fun execute()

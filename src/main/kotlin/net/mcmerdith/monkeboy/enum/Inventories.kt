@@ -11,7 +11,8 @@ enum class Inventories(private val invName: String, val handler: InventoryClickH
     FILL("Fill", HandlerInventoryFillClick()),
     FILL_CONFIRM("FC", HandlerInventoryFillConfirmClick()),
     EDIT_FILL("Edit Fill", HandlerInventoryEditFillClick()),
-    EDIT_FILL_SELECT("FE", HandlerInventoryEditFillSelectorClick());
+    EDIT_FILL_SELECT("FE", HandlerInventoryEditFillSelectorClick()),
+    CLONE_CONFIRM("CC", HandlerInventoryCloneConfirmClick());
 
     fun invName(): String {
         return "${ChatColor.BOLD}$invName"

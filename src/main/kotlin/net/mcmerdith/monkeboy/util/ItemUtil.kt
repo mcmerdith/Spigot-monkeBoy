@@ -22,8 +22,8 @@ object ItemUtil {
         this.cloneIDKey = NamespacedKey(main, "clone-id")
 
         Material.values().forEach {
-            if (it.isBlock) {
-                if (it.isSolid) {
+            if (it.isBlock || it.isAir) {
+                if (it.isSolid || it.isAir) {
                     SOLID_BLOCKS.add(it)
                 }
                 BLOCKS.add(it)

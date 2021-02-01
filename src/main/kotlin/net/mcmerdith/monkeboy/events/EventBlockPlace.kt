@@ -35,6 +35,8 @@ class EventBlockPlace : Listener {
             server.addEntity(townsperson)
         }
 
+        block.data
+
         // SPECIAL ITEM LOGIC
         if (item.containsEnchantment(Enchantment.DURABILITY)) {
             if (InventoryUtil.isItemGUIItem(item, InventoryUtil.UI.ITEMS.CLONE)) {

@@ -35,8 +35,6 @@ class EventBlockPlace : Listener {
             server.addEntity(townsperson)
         }
 
-        block.data
-
         // SPECIAL ITEM LOGIC
         if (item.containsEnchantment(Enchantment.DURABILITY)) {
             if (InventoryUtil.isItemGUIItem(item, InventoryUtil.UI.ITEMS.CLONE)) {
@@ -74,12 +72,10 @@ class EventBlockPlace : Listener {
                                     previous = item
                                 )
                             )
-                            ChatUtil.info(player, "Location Saved (${Util.locationToString(location)})")
+                            ChatUtil.actionInfo(player, "Location Saved (${Util.locationToString(location)})")
                         } else {
                             player.inventory.setItemInMainHand(ItemUtil.getFillItem(fillType, matOverride = type))
-                            // TODO Update To ItemUtil
-                            val timestamp =
-                                meta.persistentDataContainer.get(ItemUtil.timestampKey, PersistentDataType.LONG)
+                            val timestamp = ItemUtil.getData(item, ItemUtil.timestampKey, PersistentDataType.LONG)
                             if (timestamp != null && (System.currentTimeMillis() - timestamp) > 300000) {
                                 ChatUtil.error(
                                     player,

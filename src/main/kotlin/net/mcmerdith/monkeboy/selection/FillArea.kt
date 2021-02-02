@@ -18,7 +18,6 @@ class FillArea(val start: Location, val finish: Location, val type: Material, va
 
     val fillStart = Vector.getMinimum(b1, b2)
     val fillFinish = Vector.getMaximum(b1, b2)
-    val hasPlayer = player != null
 
     val world = start.world
     val noWorld = world != finish.world || world == null
@@ -26,17 +25,17 @@ class FillArea(val start: Location, val finish: Location, val type: Material, va
     val particles: BukkitTask? = (player as? Player)?.let { drawBorderFor(it, fillStart, fillFinish) }
 
     init {
-        if (hasPlayer) {
-            ChatUtil.info(player!!, "Generated fill command ($fillStart -> $fillFinish)")
+        if (player is Player) {
+            ChatUtil.actionInfo(player, "Generated fill command ($fillStart -> $fillFinish)")
         }
     }
 
     override fun execute() {
-        if (hasPlayer) ChatUtil.info(player!!, "Filling $fillStart -> $fillFinish with ${type.name}")
+        if (player is Player) ChatUtil.actionInfo(player, "Filling $fillStart -> $fillFinish with ${type.name}")
         Bukkit.getScheduler().runTask(Main.getInstance(), Runnable {
             when {
                 noWorld -> {
-                    if (hasPlayer) ChatUtil.error(player!!, "The 2 points must be in the same dimension")
+                    if (player is Player) ChatUtil.actionError(player, "The 2 points must be in the same dimension")
                 }
                 else -> {
                     val useIncludes = options.any { it.type == BlockUtil.FillOption.Type.IF }
@@ -59,7 +58,7 @@ class FillArea(val start: Location, val finish: Location, val type: Material, va
                                 block.type = type
                             }
 
-                    if (hasPlayer) ChatUtil.success(player!!, "Complete")
+                    if (player is Player) ChatUtil.actionSuccess(player, "Complete")
                 }
             }
 
@@ -70,6 +69,6 @@ class FillArea(val start: Location, val finish: Location, val type: Material, va
     override fun expire(notifyPlayer: Boolean) {
         particles?.cancel()
         HandlerInventoryEditFillClick.areas.remove(player)
-        if (hasPlayer && notifyPlayer) ChatUtil.error(player!!, "Fill Job ($fillStart -> $fillFinish) expired")
+        if (notifyPlayer && player is Player) ChatUtil.actionError(player, "Fill Job ($fillStart -> $fillFinish) expired")
     }
 }

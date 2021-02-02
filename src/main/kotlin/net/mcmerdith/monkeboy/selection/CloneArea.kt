@@ -26,14 +26,12 @@ class CloneArea(val player: Player?, val location1: Location) : TNArea() {
     lateinit var destinationFinish: Vector
     lateinit var destinationBox: BukkitTask
 
-    private val hasPlayer = player != null
-
     private val loc1Particle: BukkitTask = Bukkit.getScheduler().runTaskTimer(Main.getInstance(), Runnable {
-        if (hasPlayer) spawnParticle(player!!, location1)
+        if (player is Player) spawnParticle(player, location1)
     }, 10, 60)
 
     init {
-        if (hasPlayer) ChatUtil.info(player!!, "Set origin to ${location1.toVector()}")
+        if (player is Player) ChatUtil.actionInfo(player, "Set origin to ${location1.toVector()}")
     }
 
     fun next(location: Location) {
@@ -47,7 +45,7 @@ class CloneArea(val player: Player?, val location1: Location) : TNArea() {
             calculateDestination()
             message = "target"
         }
-        if (hasPlayer) ChatUtil.info(player!!, "$message to ${location.toVector()}")
+        if (player is Player) ChatUtil.actionInfo(player, "$message to ${location.toVector()}")
     }
 
     private fun calculateOrigin() {
@@ -56,7 +54,7 @@ class CloneArea(val player: Player?, val location1: Location) : TNArea() {
 
         originStart = Vector.getMinimum(vl1, vl2)
         originFinish = Vector.getMaximum(vl1, vl2)
-        if (hasPlayer) originBox = drawBorderFor(player!!, originStart, originFinish)
+        if (player is Player) originBox = drawBorderFor(player, originStart, originFinish)
     }
 
     private fun calculateDestination() {
@@ -65,14 +63,14 @@ class CloneArea(val player: Player?, val location1: Location) : TNArea() {
 
         destinationStart = Vector.getMinimum(vl1, vl2)
         destinationFinish = Vector.getMaximum(vl1, vl2)
-        if (hasPlayer) destinationBox = drawBorderFor(player!!, destinationStart, destinationFinish)
+        if (player is Player) destinationBox = drawBorderFor(player, destinationStart, destinationFinish)
     }
 
     override fun execute() {
         if (
             ready()
         ) {
-            if (hasPlayer) ChatUtil.info(player!!, "Cloning $location1 -> $location2 to $destination")
+            if (player is Player) ChatUtil.actionInfo(player, "Cloning $location1 -> $location2 to $destination")
             Bukkit.getScheduler().runTask(Main.getInstance(), Runnable {
                 val distances = originFinish.subtract(originStart)
                 for (x in 0..distances.blockX)
@@ -98,12 +96,12 @@ class CloneArea(val player: Player?, val location1: Location) : TNArea() {
                                 }
                             }
                         }
-                if (hasPlayer) ChatUtil.success(player!!, "Complete")
+                if (player is Player) ChatUtil.actionSuccess(player, "Complete")
 
                 expire(false)
             })
         } else {
-            if (hasPlayer) ChatUtil.error(player!!, "Something went wrong cloning the area")
+            if (player is Player) ChatUtil.actionError(player, "Something went wrong cloning the area")
         }
     }
 
@@ -117,18 +115,23 @@ class CloneArea(val player: Player?, val location1: Location) : TNArea() {
                 location1.world != null
     }
 
+    fun hasLoc2() = ::location2.isInitialized
+    fun hasDestination() = ::destination.isInitialized
+    fun hasOrigin() = ::originStart.isInitialized && ::originFinish.isInitialized
+    fun hasDestinationStart() = ::destinationStart.isInitialized
+
     override fun expire(notifyPlayer: Boolean) {
-        if (hasPlayer) ALL.remove(player!!)
+        if (player is Player) ALL.remove(player)
 
         loc1Particle.cancel()
         watchdog.cancel()
         if (::originBox.isInitialized) originBox.cancel()
         if (::destinationBox.isInitialized) destinationBox.cancel()
 
-        if (hasPlayer && notifyPlayer) {
-            val str =
-                if (ready()) "Clone Job ($originStart -> $originFinish to $destinationStart) expired" else "Clone Job expired"
-            ChatUtil.error(player!!, str)
+        if (notifyPlayer && player is Player) {
+            val origin = if (hasOrigin()) "$originStart -> $originFinish" else "NULL -> NULL"
+            val destination = if (hasDestinationStart()) originStart.toString() else "NULL"
+            ChatUtil.actionError(player, "Clone Job ($origin to $destination) expired")
         }
     }
 }

@@ -129,7 +129,7 @@ class CloneArea(val player: Player?, val location1: Location) : TNArea() {
         if (::destinationBox.isInitialized) destinationBox.cancel()
 
         if (notifyPlayer && player is Player) {
-            val origin = if (hasOrigin()) "$originStart -> $originFinish" else "NULL -> NULL"
+            val origin = if (hasOrigin()) "$originStart -> $originFinish" else "${location1.toVector()} -> NULL"
             val destination = if (hasDestinationStart()) originStart.toString() else "NULL"
             ChatUtil.actionError(player, "Clone Job ($origin to $destination) expired")
         }

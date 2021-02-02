@@ -12,7 +12,7 @@ class HandlerInventoryMenuClick : InventoryClickHandler() {
 
         when (clickedItem) {
             InventoryUtil.UI.MENU.FILL -> {
-                val fill = InventoryUtil.getFillBlockSelector(Inventories.FILL.invName())
+                val fill = InventoryUtil.getFillBlockSelector(Inventories.FILL_SELECTOR.invName())
                 fill.register(player)
                 fill.show()
             }

@@ -68,6 +68,7 @@ class FillArea(val start: Location, val finish: Location, val type: Material, va
 
     override fun expire(notifyPlayer: Boolean) {
         particles?.cancel()
+        watchdog.cancel()
         HandlerInventoryEditFillClick.areas.remove(player)
         if (notifyPlayer && player is Player) ChatUtil.actionError(player, "Fill Job ($fillStart -> $fillFinish) expired")
     }

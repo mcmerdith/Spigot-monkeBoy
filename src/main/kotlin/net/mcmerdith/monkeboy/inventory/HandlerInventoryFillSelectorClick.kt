@@ -7,12 +7,13 @@ import org.bukkit.entity.HumanEntity
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 
-class HandlerInventoryFillClick : InventoryClickHandler() {
+class HandlerInventoryFillSelectorClick : InventoryClickHandler() {
     override fun handle(clickedItem: ItemStack?, player: HumanEntity, event: InventoryClickEvent) {
         event.isCancelled = true
 
         clickedItem ?: return
         if (clickedItem.type == Material.AIR) return
-        InventoryUtil.open(player, InventoryUtil.getTakeMenu(ItemUtil.getFillItem(clickedItem.type)))
+        val item = if (clickedItem == InventoryUtil.UI.ITEMS.AIR_ITEM) ItemUtil.getFillItem(Material.AIR, matOverride = clickedItem.type) else ItemUtil.getFillItem(clickedItem.type)
+        InventoryUtil.open(player, InventoryUtil.getTakeMenu(item))
     }
 }

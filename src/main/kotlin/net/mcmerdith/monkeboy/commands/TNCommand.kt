@@ -40,8 +40,6 @@ abstract class TNCommand : CommandExecutor, TabCompleter {
             }, 1L)
         }
 
-        println(result > 0)
-
         return result > 0
     }
 

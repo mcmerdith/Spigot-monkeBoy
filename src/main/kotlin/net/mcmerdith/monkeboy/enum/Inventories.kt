@@ -8,7 +8,7 @@ enum class Inventories(private val invName: String, val handler: InventoryClickH
     PREFERENCES("Preferences", HandlerInventoryPreferencesClick()),
     SELECTOR("Select", null),
     TAKE("Take your block", null),
-    FILL("Fill", HandlerInventoryFillClick()),
+    FILL_SELECTOR("Fill", HandlerInventoryFillSelectorClick()),
     FILL_CONFIRM("FC", HandlerInventoryFillConfirmClick()),
     EDIT_FILL("Edit Fill", HandlerInventoryEditFillClick()),
     EDIT_FILL_SELECT("FE", HandlerInventoryEditFillSelectorClick()),

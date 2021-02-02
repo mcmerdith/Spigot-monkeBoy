@@ -55,7 +55,7 @@ class EventBlockPlace : Listener {
                 CloneArea.ALL[player] = area
             }
 
-            if (InventoryUtil.isItemGUIItem(item, ItemUtil.getFillItem(type))) {
+            if (InventoryUtil.isItemGUIItem(item, ItemUtil.getFillItem(type)) || InventoryUtil.isItemGUIItem(item, InventoryUtil.UI.ITEMS.CLEAR)) {
                 event.isCancelled = true
 
                 // FILL BLOCK LOGIC

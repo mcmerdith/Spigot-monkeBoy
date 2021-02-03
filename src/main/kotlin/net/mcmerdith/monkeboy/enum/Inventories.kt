@@ -9,10 +9,10 @@ enum class Inventories(private val invName: String, val handler: InventoryClickH
     SELECTOR("Select", null),
     TAKE("Take your block", null),
     FILL_SELECTOR("Fill", HandlerInventoryFillSelectorClick()),
-    FILL_CONFIRM("FC", HandlerInventoryFillConfirmClick()),
+    FILL_CONFIRM("Confirm Fill", HandlerInventoryFillConfirmClick()),
     EDIT_FILL("Edit Fill", HandlerInventoryEditFillClick()),
-    EDIT_FILL_SELECT("FE", HandlerInventoryEditFillSelectorClick()),
-    CLONE_CONFIRM("CC", HandlerInventoryCloneConfirmClick());
+    EDIT_FILL_SELECT("Edit Fill", HandlerInventoryEditFillSelectorClick()),
+    CLONE_CONFIRM("Confirm Clone", HandlerInventoryCloneConfirmClick());
 
     fun invName(): String {
         return "${ChatColor.BOLD}$invName"

@@ -25,6 +25,11 @@ commands:
     aliases: prefs
     description: Edit user preferences
     usage: /preferences
+  killentities:
+    permission: monkeboy.admin
+    aliases: [ke, kille, kentities, kent]
+    description: Kill entities by category. entityType can be merged as a list -> 'type|type1|type2'
+    usage: /killentities [entityType = hostile] [includeNamed = false] [includePlayers = false] [radius = -1] [mobDrops = false]
   fillitem:
     permission: monkeboy.admin
     description: Get a fill block

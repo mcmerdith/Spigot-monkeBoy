@@ -41,6 +41,7 @@ class Main : JavaPlugin() {
     fun registerCommands() {
         registerCommand("menu", CommandMenu())
         registerCommand("preferences", CommandPrefs())
+        registerCommand("killentities", CommandKillEntities())
         registerCommand("fillitem", CommandFillItem())
         registerCommand("fillconfirm", CommandFillConfirm())
         registerCommand("cloneconfirm", CommandCloneConfirm())

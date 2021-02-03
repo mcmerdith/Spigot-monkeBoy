@@ -14,7 +14,7 @@ class EventInventoryClick : Listener {
         scrollable.clickEvent(event)
         if (event.isCancelled) return
 
-        Inventories.values().filter { event.view.title.startsWith(it.invName()) }.forEach {
+        Inventories.values().filter { /*event.view.title.startsWith(it.invName())*/ event.inventory.holder == it.handler }.forEach {
             it.handler?.clickEvent(event)
         }
     }

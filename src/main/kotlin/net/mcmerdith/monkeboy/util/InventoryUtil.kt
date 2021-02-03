@@ -10,6 +10,7 @@ import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.HumanEntity
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 
 object InventoryUtil {
@@ -67,7 +68,7 @@ object InventoryUtil {
     /* SPECIFIC INVENTORIES */
 
     fun getMenu(): Inventory {
-        val menu = newInv(4, Inventories.MENU.invName())
+        val menu = newInv(Inventories.MENU, 4)
         setItem(4, 1, menu, UI.MENU.FILL)
         setItem(4, 2, menu, UI.MENU.CLEAR)
         setItem(1, 1, menu, UI.MENU.PREFS)
@@ -79,7 +80,7 @@ object InventoryUtil {
     fun getTakeMenu(items: List<ItemStack>): Inventory {
         val current = if (items.size > 9) items.subList(0, 9) else items
         val startIndex = (9 - current.size) / 2
-        val inventory = newInv(1, Inventories.TAKE.invName())
+        val inventory = newInv(Inventories.TAKE, 1)
         current.forEachIndexed { index, itemStack ->
             inventory.setItem(index + startIndex, itemStack)
         }
@@ -88,7 +89,7 @@ object InventoryUtil {
     }
 
     fun getPreferencesMenu(player: HumanEntity): Inventory {
-        val inv = newInv(5, Inventories.PREFERENCES.invName())
+        val inv = newInv(Inventories.PREFERENCES, 5)
         val fillWarnings = UserPrefsConfig.config.getBoolean("${player.uniqueId}.fillwarnings", true)
         setItem(1, 1, inv, UI.PREFS.FILL_WARNINGS.enabled(fillWarnings))
 
@@ -99,7 +100,7 @@ object InventoryUtil {
         val exclude = options.filter { it.type == BlockUtil.FillOption.Type.NOT }.chunked(8).getOrNull(0) ?: listOf()
         val include = options.filter { it.type == BlockUtil.FillOption.Type.IF }.chunked(8).getOrNull(0) ?: listOf()
 
-        val inv = newInv(4, Inventories.EDIT_FILL.invName())
+        val inv = newInv(Inventories.EDIT_FILL, 4)
         setItem(0, 0, inv, UI.EDIT_FILL.ADD_EXCLUDE)
         setItem(0, 1, inv, UI.EDIT_FILL.ADD_INCLUDE)
         setItem(4, 3, inv, UI.EDIT_FILL.EXECUTE)
@@ -116,7 +117,7 @@ object InventoryUtil {
     }
 
     fun getFillComplete(): Inventory {
-        val inv = newInv(1, Inventories.FILL_CONFIRM.invName())
+        val inv = newInv(Inventories.FILL_CONFIRM, 1)
 
         setItem(3, 0, inv, UI.EDIT_FILL.EXECUTE)
         setItem(4, 0, inv, UI.EDIT_FILL.PREVIEW)
@@ -127,7 +128,7 @@ object InventoryUtil {
     }
 
     fun getCloneComplete(): Inventory {
-        val inv = newInv(1, Inventories.CLONE_CONFIRM.invName())
+        val inv = newInv(Inventories.CLONE_CONFIRM, 1)
 
         setItem(3, 0, inv, UI.CLONE.EXECUTE)
         setItem(4, 0, inv, UI.CLONE.PREVIEW)
@@ -136,19 +137,19 @@ object InventoryUtil {
         return inv
     }
 
-    fun getFillBlockSelector(name: String?): ScrollableInventory = getSelector(ItemUtil.SOLID_BLOCKS, name)
-    fun getBlockSelector(name: String?): ScrollableInventory = getSelector(ItemUtil.BLOCKS, name)
-    fun getItemSelector(name: String?): ScrollableInventory = getSelector(ItemUtil.ITEMS, name)
-    fun getAllSelector(name: String?): ScrollableInventory = getSelector(ItemUtil.ALL_ITEMS, name)
+    fun getFillBlockSelector(inventory: Inventories): ScrollableInventory = getSelector(inventory.handler, ItemUtil.SOLID_BLOCKS, inventory.invName())
+    fun getBlockSelector(inventory: Inventories): ScrollableInventory = getSelector(inventory.handler, ItemUtil.BLOCKS, inventory.invName())
+    fun getItemSelector(inventory: Inventories): ScrollableInventory = getSelector(inventory.handler, ItemUtil.ITEMS, inventory.invName())
+    fun getAllSelector(inventory: Inventories): ScrollableInventory = getSelector(inventory.handler, ItemUtil.ALL_ITEMS, inventory.invName())
 
-    fun getSelector(items: List<Material>, name: String? = null): ScrollableInventory {
+    fun getSelector(holder: InventoryHolder?, items: List<Material>, name: String? = null): ScrollableInventory {
         val finalInv = ScrollableInventory()
         var currentInv: Inventory? = null
 
         items.forEachIndexed { i: Int, material: Material ->
             if (i % 36 == 0) {
                 if (i != 0) finalInv.addInventory(currentInv!!)
-                currentInv = newInv(4, "${name?.plus(" ")}${Inventories.SELECTOR.invName()}", true)
+                currentInv = newInv(Inventories.SELECTOR, 4, holder, name?.plus(" "), true)
             }
 
             currentInv?.addItem(if (material == Material.AIR) UI.ITEMS.AIR_ITEM else ItemStack(material))
@@ -159,11 +160,12 @@ object InventoryUtil {
 
     /* UTIL INVENTORY FUNCTIONS */
 
-    fun newInv(rowsRaw: Int, name: String, scrollable: Boolean = false): Inventory {
-        val hasHome = !name.startsWith(Inventories.MENU.invName())
+    fun newInv(inventory: Inventories, rowsRaw: Int, holderOverride: InventoryHolder? = null, namePrepend: String? = null, scrollable: Boolean = false): Inventory {
+        val fullName = (namePrepend ?: "") + inventory.invName()
+        val hasHome = !fullName.startsWith(Inventories.MENU.invName())
         val rows = (rowsRaw + (if (scrollable || hasHome) 1 else 0)).coerceIn(0..6)
 
-        val inv = Bukkit.createInventory(null, rows * 9, name)
+        val inv = Bukkit.createInventory(holderOverride ?: inventory.handler, rows * 9, fullName)
 
         if (scrollable) {
             setItem(0, rows - 1, inv, UI.NAV.BACK)

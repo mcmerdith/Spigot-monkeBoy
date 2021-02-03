@@ -36,7 +36,7 @@ class HandlerInventoryEditFillClick : InventoryClickHandler() {
         when (clickedItem) {
             InventoryUtil.UI.EDIT_FILL.ADD_EXCLUDE,
             InventoryUtil.UI.EDIT_FILL.ADD_INCLUDE -> {
-                val inv = InventoryUtil.getBlockSelector(Inventories.EDIT_FILL_SELECT.invName())
+                val inv = InventoryUtil.getBlockSelector(Inventories.EDIT_FILL_SELECT)
                 inv.register(player)
                 inv.show()
 
